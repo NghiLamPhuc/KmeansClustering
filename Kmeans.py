@@ -5,7 +5,7 @@ from write_file import list_to_txt_with_last_comma, list_to_txt_continuos
 from read_file import read_lines_to_list
 
 class Kmeans:
-    def __init__(self, dataInit: list, k_cluster: int, dType: int):
+    def __init__(self, dataInit: list, k_cluster: int, dType: int, dataName: str):
         self.dataInitial = dataInit
         self.size = len(dataInit)
         self.k = k_cluster
@@ -16,7 +16,8 @@ class Kmeans:
         self.kCluster = list(list()) #Chia cluster ra theo list
         self.kIndex = list(list())
 
-        self.outfileDir = './outfile/'
+        self.outfileDir = './outfile/{0}/'.format(dataName) 
+        self.numOfLoops = 1
     # Khong gop cac buoc first lai, vi sau nay cai tien.
     def set_center_list_first(self): # Co the cai thien trong tuong lai-----?
         # Gia su co it nhat 2 diem dau tien giong nhau (co the keo theo ket qua phan thieu lop)
@@ -83,8 +84,6 @@ class Kmeans:
             if (indexMinDistancesNew[index] != self.indexMinDistances[index]):
                 checkEnd = 0
                 break
-        # strl1 = ''.join(str(num1) for num1 in indexMinDistancesNew)
-        # strl2 = ''.join(str(num2) for num2 in self.indexMinDistances)
         self.indexMinDistances = indexMinDistancesNew
         return checkEnd
     
@@ -96,6 +95,7 @@ class Kmeans:
         self.write_step_outfile()
 
     def update_step(self):
+        self.numOfLoops += 1
         self.update_center()
         self.update_distances()
         endOrNot = self.update_point_to_cluster()
@@ -121,21 +121,26 @@ class Kmeans:
         self.write_step_kCluster()
 
     def write_step_center(self):
-        pointStrList = list()
+        pointStrList = ['Loop ' + str(self.numOfLoops)]
         for center in self.centers:
             pointStrList.append('c{0}: '.format(self.centers.index(center)) + center.display())
-        list_to_txt_continuos(pointStrList, self.outfileDir, 'centers.txt')
+        list_to_txt_continuos(pointStrList, self.outfileDir, 'centers.txt', '\n')
+
     def write_step_distances(self):
-        dPointsStrList = list()
+        dPointsStrList = ['Loop ' + str(self.numOfLoops)]
         for dPoints in self.distancesPointToCenters:
             dPointsStrList.append(str(dPoints))
-        list_to_txt_continuos(dPointsStrList, self.outfileDir, 'distances.txt')
+        list_to_txt_continuos(dPointsStrList, self.outfileDir, 'distances.txt', '\n')
+
     def write_step_cluster_of_point(self):
-        list_to_txt_continuos(self.indexMinDistances, self.outfileDir, 'pointCluster.txt')
+        toWrite = ['Loop ' + str(self.numOfLoops) + ': ']
+        toWrite += self.indexMinDistances
+        list_to_txt_continuos(toWrite, self.outfileDir, 'pointCluster.txt', ' ')
+
     def write_step_kCluster(self):
-        pointStrList = list()
+        pointStrList = ['Loop ' + str(self.numOfLoops)]
         for cluster in self.kCluster:
-            pointStrList.append('cluster {0}'.format(self.kCluster.index(cluster)))
+            pointStrList.append('\tCluster {0} has {1} objects.'.format(self.kCluster.index(cluster), len(cluster)))
             for point in cluster:
                 pointStrList.append('{0}.'.format(self.dataInitial.index(point)) + (point.display() + ' ').rstrip() )
-        list_to_txt_continuos(pointStrList, self.outfileDir, 'cluster.txt')
+        list_to_txt_continuos(pointStrList, self.outfileDir, 'cluster.txt', '\n')
