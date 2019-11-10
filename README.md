@@ -1,4 +1,6 @@
 # KmeansClustering
+https://github.com/NghiLamPhuc/KmeansClustering
+
 Implement Basic Kmeans Clustering Algorithm.
 
 Loop while new cluster == previous cluster.
