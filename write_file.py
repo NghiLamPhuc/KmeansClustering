@@ -47,15 +47,16 @@ def dict_to_txt(Dict: dict, folderName, name):
             fout.write('{0}'.format(values[-1]) )
             fout.write('\n')
 
-def list_to_txt_continuos(List: list, folderName, name):
+def list_to_txt_continuos(List: list, folderName: str, name: str, seperateType: str):
     make_folder.create_folder(folderName)
     if not List:
         print('Danh sach rong! ' + name)
         return
     with open(folderName + name, 'a+', encoding = 'utf-8') as fout:
         for item in List:
-            fout.write('{0}\n'.format(item))
-        fout.write('#'*200 + '\n')
+            fout.write(('{0}' + seperateType).format(item))
+        # fout.write('-!@#$%^&*-'*len(List) + '\n')
+        fout.write('\n'*3 + '\n')
 
 def doubleList_to_txt_continuos(List: list(list()), folderName, name):
     make_folder.create_folder(folderName)
