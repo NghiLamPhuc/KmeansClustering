@@ -11,3 +11,5 @@ Loop while new cluster == previous cluster.
 
 3. Clustering Points.
 
+Point Class: n-coordination.
+
