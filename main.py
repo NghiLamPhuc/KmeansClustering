@@ -24,8 +24,9 @@ def set_initData_with_labeledData(dir: str, fileName: str, splitType: str) -> li
 
 def main():
     dir = './datasets/'
-    fileName = ['train_vn.txt', 'train_en.txt', 'Spend_Age.txt', 'BaiTapAnBinhLinhetc.txt']
+    datasetName = ['train_vn.txt', 'train_en.txt', 'Spend_Age.txt', 'BaiTapAnBinhLinhetc.txt']
     splitType = ' '
+    fileName = datasetName[-1]
 
     An = Point([10, 10])
     Binh = Point([40, 20])
@@ -44,8 +45,8 @@ def main():
     Nhan7 = Point([90, 10])
 
     initData = list()
-    # initData = set_initData_with_nonLabeledData(dir, fileName[-1], splitType)
-    initData = [Loc,Nhan,Nghia,An,Binh,Linh,Phat,Trong,Nhan1,Nhan2,Nhan3,Nhan4,Nhan5,Nhan6,Nhan7]
+    initData = set_initData_with_nonLabeledData(dir, fileName, splitType)
+    # initData = [Loc,Nhan,Nghia,An,Binh,Linh,Phat,Trong,Nhan1,Nhan2,Nhan3,Nhan4,Nhan5,Nhan6,Nhan7]
     # k = 2 # for train_vn
     # k = 13 # for train_en
     k = 3 # spend_age
@@ -54,25 +55,12 @@ def main():
     if k > len(initData):
         print('k nhieu hon du lieu.')
         return
-    kmeans = Kmeans(initData, k, dType)
+    kmeans = Kmeans(initData, k, dType, fileName)
     kmeans.initial_step()
     kmeans.update_step()
     
     for cluster in kmeans.kCluster:
         print(len(cluster))
-
-    # for cluster in kmeans.kCluster:
-    #     for point in cluster:
-    #         print(point.display())
-
-    # for cluster in kmeans.kIndex:
-    #     for index in cluster:
-    #         print(index + 1)
-    
-
-    
-
-
 
 
 if __name__=="__main__": main()
