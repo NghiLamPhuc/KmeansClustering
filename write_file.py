@@ -56,7 +56,8 @@ def list_to_txt_continuos(List: list, folderName: str, name: str, seperateType: 
         for item in List:
             fout.write(('{0}' + seperateType).format(item))
         # fout.write('-!@#$%^&*-'*len(List) + '\n')
-        fout.write('\n'*3 + '\n')
+        # fout.write('\n'*3)
+        fout.write('\n')
 
 def doubleList_to_txt_continuos(List: list(list()), folderName, name):
     make_folder.create_folder(folderName)
