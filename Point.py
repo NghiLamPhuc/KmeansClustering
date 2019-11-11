@@ -9,13 +9,19 @@ class Point:
             d += (self.coord[index] - secondPoint.coord[index])**2
         return d**0.5
 
+    def display_with_parentheses(self) -> str:
+        coordStr = ''
+        for index in range(self.size - 1):
+            coordStr += str(self.coord[index]) + ', '
+        coordStr += str(self.coord[-1])
+        return ''.join('(' + coordStr + ')')
+    
     def display(self) -> str:
         coordStr = ''
         for index in range(self.size - 1):
             coordStr += str(self.coord[index]) + ', '
         coordStr += str(self.coord[-1])
-        # print(''.join('(' + coordStr + ')'))
-        return ''.join('(' + coordStr + ')')
+        return ''.join(coordStr)
 
 def calculate_midpoint_of_list(listPoints: list) -> list():
     midpoint = list()
