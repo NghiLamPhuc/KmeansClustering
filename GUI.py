@@ -95,12 +95,13 @@ class MyWindow(QtWidgets.QMainWindow):
                 kmeans.update_step()
                 exeTime = (datetime.now() - start).total_seconds()    
                 
+                #Hiển thị kết quả phân lớp.
                 dir = './outfile/' + self.fileInitName + '/'
                 fileClusterName = 'index_cluster.txt'
                 indexClusterStr = open(dir + fileClusterName).read()
                 self.plainTextCluster.insertPlainText(indexClusterStr)
                 self.checkKmeans = 1
-
+                #Hiển thị center cuối cùng.
                 fileLastCentersName = 'lastCenters.txt'
                 lastCentersStr = open(dir + fileLastCentersName).read()
                 self.plainTextLastCenters.insertPlainText(lastCentersStr)

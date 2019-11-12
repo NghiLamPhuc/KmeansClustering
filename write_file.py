@@ -59,6 +59,18 @@ def list_to_txt_continuos(List: list, folderName: str, name: str, seperateType: 
         # fout.write('\n'*3)
         fout.write('\n')
 
+def list_to_txt_continuos_with_last_comma(List: list, folderName: str, name: str, seperateType: str):
+    make_folder.create_folder(folderName)
+    if not List:
+        print('Danh sach rong! ' + name)
+        return
+    with open(folderName + name, 'a+', encoding = 'utf-8') as fout:
+        # for item in List:
+        for index in range(len(List) - 1):
+            fout.write(('{0}' + seperateType).format(List[index]))
+        fout.write(('{0}').format(List[-1]))
+        fout.write('\n')
+
 def doubleList_to_txt_continuos(List: list(list()), folderName, name):
     make_folder.create_folder(folderName)
     if not List:

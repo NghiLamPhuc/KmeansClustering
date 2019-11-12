@@ -47,3 +47,4 @@ def read_input_file_to_int(link, fileName) -> int:
     num = int(f.read())
     f.close()
     return num
+
