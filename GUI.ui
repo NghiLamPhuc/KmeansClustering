@@ -724,7 +724,7 @@
               </font>
              </property>
              <property name="text">
-              <string>Centers</string>
+              <string>Trung tâm</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
