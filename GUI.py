@@ -86,6 +86,9 @@ class MyWindow(QtWidgets.QMainWindow):
                 self.plainTextCluster.setText('K > số dòng dữ liệu, mời chọn lại K.')
             else:
                 # dtype = 1 euclid distance, sau này nếu có cosin thì 2....
+                self.plainTextCluster.clear()
+                self.plainTextLastCenters.clear()
+                
                 start = datetime.now()
                 kmeans = Kmeans(self.initData, k, 1, self.fileInitName)
                 kmeans.initial_step()
