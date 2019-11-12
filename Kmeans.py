@@ -96,7 +96,7 @@ class Kmeans:
         self.calculate_distances_first()
         self.set_point_to_cluster_first()
         self.clustering()
-        shutil.rmtree(self.fileDir, ignore_errors=True)
+        shutil.rmtree(self.outfileDir, ignore_errors=True)
         self.write_step_outfile()
 
     def update_step(self):
