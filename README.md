@@ -13,3 +13,4 @@ Loop while new cluster == previous cluster.
 
 Point Class: n-coordination.
 
+![App](screenshots/GiaodienKmeans.PNG)
