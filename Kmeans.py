@@ -25,6 +25,8 @@ class Kmeans:
     # Khong gop cac buoc first lai, vi sau nay cai tien.
     def set_center_list_first(self): # Co the cai thien trong tuong lai-----?
         # Gia su co it nhat 2 diem dau tien giong nhau (co the keo theo ket qua phan thieu lop)
+        if self.k == self.size:
+            return 0
         self.centers.append(self.dataInitial[0])
         if len(self.centers) == self.k:
             return
@@ -37,8 +39,11 @@ class Kmeans:
             if checkAdded == 0:
                 self.centers.append(point)
                 if len(self.centers) == self.k:
-                    return
-        
+                    return 1
+        #####
+        ## Bị lỗi là, thí dụ datasets có 15 dòng, 2 dòng giống nhau, chọn k thì nó chỉ chọn 14, dẫn tới sai.
+        #####
+
     def calculate_distances_first(self):
         for point in self.dataInitial:
             pointToCenters = list()
@@ -92,12 +97,15 @@ class Kmeans:
         return checkEnd
     
     def initial_step(self):
-        self.set_center_list_first()
+        step1 = self.set_center_list_first()
+        if step1 == 0: # k = số dòng dữ liệu.
+            return 0
         self.calculate_distances_first()
         self.set_point_to_cluster_first()
         self.clustering()
         shutil.rmtree(self.outfileDir, ignore_errors=True)
         self.write_step_outfile()
+        return 1
 
     def update_step(self):
         self.numOfLoops += 1
@@ -108,6 +116,7 @@ class Kmeans:
             self.clustering()
             self.write_step_outfile()
             self.write_last_centers()
+            self.write_last_kCluster()
             return
         if endOrNot == 0:
             self.clustering()
@@ -152,7 +161,16 @@ class Kmeans:
             pointStrList.append('\nCluster {0} has {1} objects: '.format(indexCluster, len(cluster)))
             for point in cluster:
                 pointStrList.append('{0}.'.format(self.dataInitial.index(point)) + (point.display_with_parentheses() + ' ').rstrip() )
-            list_to_txt_continuos(pointStrList, self.outfileDir, 'cluster{0}.txt'.format(indexCluster), '\n')
+            list_to_txt_continuos(pointStrList, self.outfileDir + 'cluster/', 'cluster{0}.txt'.format(indexCluster), '\n')
+
+    def write_last_kCluster(self):
+        pointStrList = ['Loop {0}'.format(self.numOfLoops)]
+        for cluster in self.kCluster:
+            indexCluster = self.kCluster.index(cluster)
+            pointStrList.append('\nCluster {0} has {1} objects: '.format(indexCluster, len(cluster)))
+            for point in cluster:
+                pointStrList.append('{0}.'.format(self.dataInitial.index(point)) + (point.display_with_parentheses() + ' ').rstrip() )
+        list_to_txt_continuos(pointStrList, self.outfileDir, 'last_clustering.txt', '\n')
 
     def write_step_kCluster_index(self):
         indexPointStrList = ['Loop ' + str(self.numOfLoops)]
@@ -167,7 +185,7 @@ class Kmeans:
         pointStrList = []
         for center in self.centers:
             pointStrList.append(center.display())
-        list_to_txt_continuos(pointStrList, self.outfileDir, 'lastCenters.txt', '\n')
+        list_to_txt_continuos(pointStrList, self.outfileDir, 'last_centers.txt', '\n')
 
 # lastCenters = []
 # def predict(newPoint: Point) -> str:

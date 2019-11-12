@@ -27,6 +27,7 @@ class MyWindow(QtWidgets.QMainWindow):
         self.btnPredict.clicked.connect(self.on_Predict_clicked)
         self.btnImport.clicked.connect(self.on_Import_clicked)
         self.btnExport.clicked.connect(self.on_Export_clicked)
+        self.spinBox.setValue(2)
 
         self.initData = None
         self.inputDir = './datasets/'
@@ -58,6 +59,7 @@ class MyWindow(QtWidgets.QMainWindow):
                 self.plainTextInput.insertPlainText(rowStr)
             self.labelInput.setText('Có {} dòng.'.format(rowLen) )
             self.labelInputName.setText(self.fileInitName)
+            self.spinBox.setMaximum(len(self.initData))
 
     def on_Predict_clicked(self):
         instanceStr = self.lineEditPredict.text()
@@ -67,7 +69,7 @@ class MyWindow(QtWidgets.QMainWindow):
             self.labelLog.setText('Chưa phân lớp.')
         else:
             dir = './outfile/' + self.fileInitName + '/'
-            fileName = 'lastCenters.txt'
+            fileName = 'last_centers.txt'
             lastCenters = get_last_centers(dir, fileName, ', ')
             inputNewPointStr = self.lineEditPredict.text()
             coordList = list()
@@ -81,14 +83,13 @@ class MyWindow(QtWidgets.QMainWindow):
             self.labelLog.setText('Chưa tải dữ liệu lên.')
         else:
             self.plainTextCluster.clear()
+            # dtype = 1 euclid distance, sau này nếu có cosin thì 2....
+            self.plainTextCluster.clear()
+            self.plainTextLastCenters.clear()
             k = float(self.spinBox.text())
-            if k > len(self.initData):
-                self.plainTextCluster.setText('K > số dòng dữ liệu, mời chọn lại K.')
+            if k == len(self.initData):
+                self.plainTextCluster.insertPlainText('Vì k bằng số dòng dữ liệu, nên mỗi dòng là một lớp.')
             else:
-                # dtype = 1 euclid distance, sau này nếu có cosin thì 2....
-                self.plainTextCluster.clear()
-                self.plainTextLastCenters.clear()
-                
                 start = datetime.now()
                 kmeans = Kmeans(self.initData, k, 1, self.fileInitName)
                 kmeans.initial_step()
@@ -97,15 +98,15 @@ class MyWindow(QtWidgets.QMainWindow):
                 
                 #Hiển thị kết quả phân lớp.
                 dir = './outfile/' + self.fileInitName + '/'
-                fileClusterName = 'index_cluster.txt'
+                # fileClusterName = 'index_cluster.txt'
+                fileClusterName = 'last_clustering.txt'
                 indexClusterStr = open(dir + fileClusterName).read()
                 self.plainTextCluster.insertPlainText(indexClusterStr)
                 self.checkKmeans = 1
                 #Hiển thị center cuối cùng.
-                fileLastCentersName = 'lastCenters.txt'
+                fileLastCentersName = 'last_centers.txt'
                 lastCentersStr = open(dir + fileLastCentersName).read()
-                self.plainTextLastCenters.insertPlainText(lastCentersStr)
-                
+                self.plainTextLastCenters.insertPlainText(lastCentersStr)                
                 self.labelLog.setText(str(timedelta(seconds = exeTime)))
             
 if __name__ == '__main__':

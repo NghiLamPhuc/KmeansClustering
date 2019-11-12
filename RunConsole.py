@@ -60,7 +60,10 @@ def main():
         print('k nhieu hon du lieu.')
         return
     kmeans = Kmeans(initData, k, dType, fileName)
-    kmeans.initial_step()
+    step1 = kmeans.initial_step()
+    if step1 == 0: # khong can lam nua..
+        print('Vì k = số dòng dữ liệu, nên mỗi dòng dữ liệu là 1 lớp.')
+        return
     kmeans.update_step()
     for cluster in kmeans.kCluster:
         print(len(cluster))
