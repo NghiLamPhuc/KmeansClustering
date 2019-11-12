@@ -1,0 +1,3 @@
+Kmeans.py Thuật toán chính.
+Point.py Lớp Point định nghĩa kiểu dữ liệu cho kmeans clustering, point có nhiều thuộc tính (chiều, features).
+make_folder.py; write_file.py; read_file.py: một số hàm đọc ghi.
