@@ -19,7 +19,7 @@ class Kmeans:
         self.kIndex = list(list())
 
         self.fileDir = './' + dataName
-        self.outfileDir = './outfile' + dataName + '/'
+        self.outfileDir = './outfile/' + dataName + '/'
         
         self.numOfLoops = 1
     # Khong gop cac buoc first lai, vi sau nay cai tien.
