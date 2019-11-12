@@ -1,8 +1,10 @@
 from Point import Point
 from Point import calculate_midpoint_of_list, compare_two_point
-from make_folder import create_folder
-from write_file import list_to_txt_with_last_comma, list_to_txt_continuos
+# from make_folder import create_folder
+from write_file import list_to_txt_continuos_with_last_comma, list_to_txt_continuos
 from read_file import read_lines_to_list
+import shutil
+import os
 
 class Kmeans:
     def __init__(self, dataInit: list, k_cluster: int, dType: int, dataName: str):
@@ -16,7 +18,9 @@ class Kmeans:
         self.kCluster = list(list()) #Chia cluster ra theo list
         self.kIndex = list(list())
 
-        self.outfileDir = './outfile/{0}/'.format(dataName)
+        self.fileDir = './' + dataName
+        self.outfileDir = './outfile' + dataName + '/'
+        
         self.numOfLoops = 1
     # Khong gop cac buoc first lai, vi sau nay cai tien.
     def set_center_list_first(self): # Co the cai thien trong tuong lai-----?
@@ -50,7 +54,7 @@ class Kmeans:
     def clustering(self):
         self.kCluster = list()
         self.kIndex = list()
-        for iCluster in range(self.k):
+        for iCluster in range(int(self.k)):
             cluster = list()
             position = list()
             for index in range(self.size):
@@ -92,6 +96,7 @@ class Kmeans:
         self.calculate_distances_first()
         self.set_point_to_cluster_first()
         self.clustering()
+        shutil.rmtree(self.fileDir, ignore_errors=True)
         self.write_step_outfile()
 
     def update_step(self):
@@ -155,8 +160,8 @@ class Kmeans:
             indexPointStrList.append('\nCluster {0} has {1} objects: '.format(self.kCluster.index(cluster), len(cluster)))
             for point in cluster:
                 indexPointStrList.append('{0}'.format(self.dataInitial.index(point)))
-            indexPointStrList.append('\n')
-        list_to_txt_continuos(indexPointStrList, self.outfileDir, 'index_cluster.txt', '; ')
+            # indexPointStrList.append('\n')
+        list_to_txt_continuos(indexPointStrList, self.outfileDir, 'index_cluster.txt', ' ')
 
     def write_last_centers(self):
         pointStrList = []
