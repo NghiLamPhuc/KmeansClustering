@@ -1,7 +1,7 @@
 import make_folder
 
 # Ghi list ra text, neu can index thi them bien i.
-def list_to_txt_with_last_comma(List: list, folderName, name):
+def list_to_txt_with_last_comma(List: list, folderName, name, splitType: str):
     make_folder.create_folder(folderName)
     if not List:
         print('Danh sach rong! ' + name)
@@ -10,7 +10,7 @@ def list_to_txt_with_last_comma(List: list, folderName, name):
     with open(folderName + name, 'w', encoding = 'utf-8') as fout:
         for itemSet in List:
             for index in range(len(itemSet) - 1):
-                fout.write('{0}, '.format(itemSet[index]) )
+                fout.write('{0}{1}'.format(itemSet[index], splitType) )
             fout.write('{0}'.format(itemSet[-1]) )
             fout.write('\n')
 
