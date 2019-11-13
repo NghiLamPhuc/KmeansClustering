@@ -96,7 +96,7 @@ class Kmeans:
         self.indexMinDistances = indexMinDistancesNew
         return checkEnd
     
-    def initial_step(self):
+    def initial_step(self) -> int:
         step1 = self.set_center_list_first()
         if step1 == 0: # k = số dòng dữ liệu.
             return 0
@@ -116,7 +116,7 @@ class Kmeans:
             self.clustering()
             self.write_step_outfile()
             self.write_last_centers()
-            self.write_last_kCluster()
+            self.write_last_kCluster_index()
             return
         if endOrNot == 0:
             self.clustering()
@@ -179,7 +179,15 @@ class Kmeans:
             for point in cluster:
                 indexPointStrList.append('{0}'.format(self.dataInitial.index(point)))
             # indexPointStrList.append('\n')
-        list_to_txt_continuos(indexPointStrList, self.outfileDir, 'index_cluster.txt', ' ')
+        list_to_txt_continuos(indexPointStrList, self.outfileDir, 'cluster_index.txt', ' ')
+
+    def write_last_kCluster_index(self):
+        indexPointStrList = ['Loop ' + str(self.numOfLoops)]
+        for cluster in self.kCluster:
+            indexPointStrList.append('\nCluster {0} has {1} objects: '.format(self.kCluster.index(cluster), len(cluster)))
+            for point in cluster:
+                indexPointStrList.append('{0}'.format(self.dataInitial.index(point)))
+        list_to_txt_continuos(indexPointStrList, self.outfileDir, 'last_cluster_index.txt', ' ')
 
     def write_last_centers(self):
         pointStrList = []
