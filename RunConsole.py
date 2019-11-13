@@ -45,13 +45,15 @@ def predict_new_point_temporary(lastCenters: list(), newPoint: Point) -> str:
 
 def main():
     dir = './datasets/'
-    datasetName = ['train_vn.txt', 'train_en.txt', 'BaiTapAnBinhLinhetc.txt']
+    datasetName = ['train_vn.txt', 'train_en.txt', 'BaiTapAnBinhLinhetc.txt', 'vectorize.txt']
     splitType = ' '
     fileName = datasetName[-1]
     lastCentersDir = './outfile/' + fileName + '/'
 
     initData = list()
     initData = set_initData_with_nonLabeledData(dir, fileName, splitType)
+    ## train_vn, train_en
+    # initData = set_initData_with_LabeledData(dir, fileName, splitType)
     dType = 1 # euclid distance
 
     k = read_input_file_to_int(dir, 'k.txt')
