@@ -37,7 +37,10 @@ def str_to_dict(file: str, splitType) -> dict:
 def read_lines_to_list(link, fileName, splitType) -> list:
     f = open(link + fileName, 'r', encoding = 'utf-8')
     List = list()
-    [List.append(line.rstrip().split(splitType)) for line in f]
+    for line in f:
+        if line != '\n':
+            lineToAdd = line.rstrip().split(splitType)
+            List.append(lineToAdd)
     f.close()
     return List
 
@@ -48,3 +51,12 @@ def read_input_file_to_int(link, fileName) -> int:
     f.close()
     return num
 
+def read_line_to_sentenceList(link, fileName, splitType) -> list:
+    f = open(link + fileName, 'r', encoding = 'utf-8')
+    sentences = list()
+    for line in f:
+        if line != '\n':
+            lineToAdd = line.rstrip().split(splitType)
+            sentences.append(''.join(lineToAdd))
+    f.close()
+    return sentences
