@@ -48,6 +48,8 @@ class MyWindow(QtWidgets.QMainWindow):
         self.labelInput.clear()
         self.labelInputName.setText('Dữ liệu số hóa')
         self.plainTextInput.clear()
+        self.plainTextCluster.clear()
+        self.plainTextLastCenters.clear()
         
         (dataPath, _) = QtWidgets.QFileDialog.getOpenFileName(None, 'Open File', self.inputDir, '*.txt')
         self.fileInitName = dataPath.split('/')[-1]
@@ -98,8 +100,8 @@ class MyWindow(QtWidgets.QMainWindow):
                 
                 #Hiển thị kết quả phân lớp.
                 dir = './outfile/' + self.fileInitName + '/'
-                # fileClusterName = 'index_cluster.txt'
-                fileClusterName = 'last_clustering.txt'
+                fileClusterName = 'last_cluster_index.txt'
+                # fileClusterName = 'last_clustering.txt'
                 indexClusterStr = open(dir + fileClusterName).read()
                 self.plainTextCluster.insertPlainText(indexClusterStr)
                 self.checkKmeans = 1
