@@ -17,11 +17,12 @@ class Kmeans:
         self.indexMinDistances = list() #cluster cac diem dua vao khoang cach o tren.
         self.kCluster = list(list()) #Chia cluster ra theo list
         self.kIndex = list(list())
-
         self.fileDir = './' + dataName
-        self.outfileDir = './outfile/' + dataName + '/'
-        
+        self.outfileDir = './outfile/' + dataName + '/'        
         self.numOfLoops = 1
+
+        self.initial_step()
+        self.update_step()
     # Khong gop cac buoc first lai, vi sau nay cai tien.
     def set_center_list_first(self): # Co the cai thien trong tuong lai-----?
         # Gia su co it nhat 2 diem dau tien giong nhau (co the keo theo ket qua phan thieu lop)
@@ -124,8 +125,8 @@ class Kmeans:
             return self.update_step()
     
     def write_step_outfile(self):
-        dir = './outfile/' 
-        fileName = ['centers.txt', 'distances.txt', 'pointCluster.txt', 'cluster.txt']
+        # dir = './outfile/' 
+        # fileName = ['centers.txt', 'distances.txt', 'pointCluster.txt', 'cluster.txt']
         # write centers
         self.write_step_center()
         # write distances
@@ -195,14 +196,14 @@ class Kmeans:
             pointStrList.append(center.display())
         list_to_txt_continuos(pointStrList, self.outfileDir, 'last_centers.txt', '\n')
 
-# lastCenters = []
-# def predict(newPoint: Point) -> str:
-#     print(lastCenters)
-#     res = ''
-#     min = lastCenters[0].euclid_distance(newPoint)
-#     for center in lastCenters:
-#         d = center.euclid_distance(newPoint)
-#         if min > d:
-#             min = d
-#             res = str(lastCenters.index(center))
-#     return res
+    def predict_new_point(self, newPoint: Point) -> str:
+        res = str(0)
+        lastCenters = self.centers
+        min = lastCenters[0].euclid_distance(newPoint)
+        for center in lastCenters:
+            d = center.euclid_distance(newPoint)
+            if min > d:
+                min = d
+                res = str(lastCenters.index(center))
+        return res
+
