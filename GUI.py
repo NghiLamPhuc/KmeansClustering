@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 import read_file, write_file, make_folder
-from RunConsole import set_initData_with_nonLabeledData, get_last_centers, predict_new_point_temporary
+from ReadDataInitialForKmeans import set_initData_with_nonLabeledData
 from Kmeans import Kmeans
 from Point import Point
 from datetime import datetime, timedelta
@@ -28,13 +28,18 @@ class MyWindow(QtWidgets.QMainWindow):
         self.btnImport.clicked.connect(self.on_Import_clicked)
         self.btnExport.clicked.connect(self.on_Export_clicked)
         self.spinBox.setValue(2)
+        self.lineEditPredict.textChanged.connect(self.on_text_predict_changed)
 
         self.initData = None
         self.inputDir = './datasets/'
         self.fileInitName = None
         self.lastCentersName = 'lastCenters.txt'
         self.checkKmeans = 0
+        self.kMeans = None
     
+    def on_text_predict_changed(self):
+        self.labelLog.clear()
+
     def on_Export_clicked(self):
         inputDir = './datasets/'
         (dataPath, _) = QtWidgets.QFileDialog.getSaveFileName(None, 'Save File', inputDir, '*.txt')
@@ -70,15 +75,12 @@ class MyWindow(QtWidgets.QMainWindow):
         elif self.checkKmeans == 0:
             self.labelLog.setText('Chưa phân lớp.')
         else:
-            dir = './outfile/' + self.fileInitName + '/'
-            fileName = 'last_centers.txt'
-            lastCenters = get_last_centers(dir, fileName, ', ')
             inputNewPointStr = self.lineEditPredict.text()
             coordList = list()
             for coord in inputNewPointStr.split(','):
                 coordList.append(float(coord))
             newPoint = Point(coordList)
-            self.labelLog.setText('-->' + predict_new_point_temporary(lastCenters, newPoint))
+            self.labelLog.setText('-->' + self.kMeans.predict_new_point(newPoint))
     
     def on_Kmeans_clicked(self):
         if self.plainTextInput.toPlainText() == "":
@@ -93,9 +95,9 @@ class MyWindow(QtWidgets.QMainWindow):
                 self.plainTextCluster.insertPlainText('Vì k bằng số dòng dữ liệu, nên mỗi dòng là một lớp.')
             else:
                 start = datetime.now()
-                kmeans = Kmeans(self.initData, k, 1, self.fileInitName)
-                kmeans.initial_step()
-                kmeans.update_step()
+                self.kMeans = Kmeans(self.initData, k, 1, self.fileInitName)
+                # kmeans.initial_step()
+                # kmeans.update_step()
                 exeTime = (datetime.now() - start).total_seconds()    
                 
                 #Hiển thị kết quả phân lớp.
