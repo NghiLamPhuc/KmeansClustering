@@ -47,7 +47,7 @@ def main():
     dir = './datasets/'
     datasetName = ['train_vn.txt', 'train_en.txt', 'BaiTapAnBinhLinhetc.txt', 'vectorize.txt']
     splitType = ' '
-    fileName = datasetName[-1]
+    fileName = datasetName[-2]
     lastCentersDir = './outfile/' + fileName + '/'
 
     initData = list()
