@@ -18,7 +18,7 @@ class Kmeans:
         self.kCluster = list(list()) #Chia cluster ra theo list
         self.kIndex = list(list())
         self.fileDir = './' + dataName
-        self.outfileDir = './outfile/' + dataName + '/'        
+        self.outfileDir = './outfile/' + dataName + '/kmeans/'        
         self.numOfLoops = 1
 
         self.initial_step()
