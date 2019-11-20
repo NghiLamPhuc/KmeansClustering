@@ -35,12 +35,23 @@ def str_to_dict(file: str, splitType) -> dict:
     return inpDict
 
 def read_lines_to_list(link, fileName, splitType) -> list:
-    f = open(link + fileName, 'r', encoding = 'utf-8')
+    f = open(link + '/' + fileName, 'r', encoding = 'utf-8')
     List = list()
     for line in f:
         if line != '\n':
             lineToAdd = line.rstrip().split(splitType)
             List.append(lineToAdd)
+    f.close()
+    return List
+
+def read_lines_to_floatlist(link, fileName, splitType) -> list:
+    f = open(link + '/' + fileName, 'r', encoding = 'utf-8')
+    List = list()
+    for line in f:
+        if line != '\n':
+            lineToAdd = line.rstrip().split(splitType)[1:-1]
+            lineToFloat = [float(numStr) for numStr in lineToAdd]
+            List.append(lineToFloat)
     f.close()
     return List
 
