@@ -9,6 +9,15 @@ class Point:
             d += (self.coord[index] - secondPoint.coord[index])**2
         return d**0.5
 
+    def cosine_distance(self, secondPoint) -> float:
+        (sumxx, sumxy, sumyy) = (0, 0, 0)
+        for i in range(self.size):
+            x = self.coord[i]; y = secondPoint.coord[i]
+            sumxx += x*x
+            sumyy += y*y
+            sumxy += x*y
+        return sumxy / ((sumxx * sumyy)**0.5)
+
     def display_with_parentheses(self) -> str:
         coordStr = ''
         for index in range(self.size - 1):
@@ -40,4 +49,3 @@ def compare_two_point(a: Point, b: Point) -> int:
         if a.coord[iCoordA] - b.coord[iCoordA] != 0:
             return 0
     return 1
-
