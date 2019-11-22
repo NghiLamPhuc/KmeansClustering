@@ -7,7 +7,8 @@ import shutil
 import os
 
 class Kmeans:
-    def __init__(self, dataInit: list, k_cluster: int, dType: int, dataName: str):
+    def __init__(self, dataInitType: int, dataInit: list, k_cluster: int, dType: int, dataName: str):
+        self.dataInitialType = dataInitType #  0 text 1 vector
         self.dataInitial = dataInit
         self.size = len(dataInit)
         self.k = k_cluster
@@ -18,7 +19,11 @@ class Kmeans:
         self.kCluster = list(list()) #Chia cluster ra theo list
         self.kIndex = list(list())
         self.fileDir = './' + dataName
-        self.outfileDir = './outfile/' + dataName + '/kmeans/'        
+
+        self.outfileDir = './outfile/' + dataName + '/kmeans_vectorinput/'
+        if dataInitType == 0:
+            self.outfileDir = './outfile/' + dataName + '/kmeans_textinput/'
+        
         self.numOfLoops = 1
 
         self.initial_step()
@@ -46,16 +51,32 @@ class Kmeans:
         #####
 
     def calculate_distances_first(self):
-        for point in self.dataInitial:
-            pointToCenters = list()
-            for iCenter in self.centers:
-                pointToCenters.append(point.euclid_distance(iCenter))
-            self.distancesPointToCenters.append(pointToCenters)
+        if self.distanceType == 1:
+            for point in self.dataInitial:
+                pointToCenters = list()
+                for iCenter in self.centers:
+                    pointToCenters.append(point.euclid_distance(iCenter))
+                self.distancesPointToCenters.append(pointToCenters)
+        elif self.distanceType == 2:
+            for point in self.dataInitial:
+                pointToCenters = list()
+                for iCenter in self.centers:
+                    pointToCenters.append(point.cosine_distance(iCenter))
+                self.distancesPointToCenters.append(pointToCenters)
 
     def set_point_to_cluster_first(self):
-        for dList in self.distancesPointToCenters:
-            minDistance = min(dList)
-            self.indexMinDistances.append(dList.index(minDistance))
+        if self.distanceType == 1:
+            for dList in self.distancesPointToCenters:
+                minDistance = min(dList)
+                self.indexMinDistances.append(dList.index(minDistance))
+        elif self.distanceType == 2:
+            for dList in self.distancesPointToCenters:
+                maxDistance = 0
+                for num in dList:
+                    if num < 1.0:
+                        if maxDistance < num:
+                            maxDistance = num
+                self.indexMinDistances.append(dList.index(maxDistance))
 
     def clustering(self):
         self.kCluster = list()
@@ -77,24 +98,48 @@ class Kmeans:
 
     def update_distances(self):
         self.distancesPointToCenters = list()
-        for point in self.dataInitial:
-            pointToCenters = list()
-            for iCenter in self.centers:
-                pointToCenters.append(point.euclid_distance(iCenter))
-            self.distancesPointToCenters.append(pointToCenters)
+        if self.distanceType == 1:
+            for point in self.dataInitial:
+                pointToCenters = list()
+                for iCenter in self.centers:
+                    pointToCenters.append(point.euclid_distance(iCenter))
+                self.distancesPointToCenters.append(pointToCenters)
+        elif self.distanceType == 2:
+            for point in self.dataInitial:
+                pointToCenters = list()
+                for iCenter in self.centers:
+                    pointToCenters.append(point.cosine_distance(iCenter))
+                self.distancesPointToCenters.append(pointToCenters)
 
     def update_point_to_cluster(self) -> int:
-        indexMinDistancesNew = list()
-        for dList in self.distancesPointToCenters:
-            minDistance = min(dList)
-            indexMinDistancesNew.append(dList.index(minDistance))
-        checkEnd = 1 # when new 'cluster-to-point' same with previous 'cluster-to-point'.
-        # 0 for difference, 1 for same.
-        for index in range(self.size):
-            if (indexMinDistancesNew[index] != self.indexMinDistances[index]):
-                checkEnd = 0
-                break
-        self.indexMinDistances = indexMinDistancesNew
+        if self.distanceType == 1:
+            indexMinDistancesNew = list()
+            for dList in self.distancesPointToCenters:
+                minDistance = min(dList)
+                indexMinDistancesNew.append(dList.index(minDistance))
+            checkEnd = 1 # when new 'cluster-to-point' same with previous 'cluster-to-point'.
+            # 0 for difference, 1 for same.
+            for index in range(self.size):
+                if (indexMinDistancesNew[index] != self.indexMinDistances[index]):
+                    checkEnd = 0
+                    break
+            self.indexMinDistances = indexMinDistancesNew
+        elif self.distanceType == 2:
+            indexMaxDistancesNew = list()
+            for dList in self.distancesPointToCenters:
+                maxDistance = 0
+                for num in dList:
+                    if num < 1.0:
+                        if maxDistance < num:
+                            maxDistance = num
+                indexMaxDistancesNew.append(dList.index(maxDistance))
+            checkEnd = 1 # when new 'cluster-to-point' same with previous 'cluster-to-point'.
+            # 0 for difference, 1 for same.
+            for index in range(self.size):
+                if (indexMaxDistancesNew[index] != self.indexMinDistances[index]):
+                    checkEnd = 0
+                    break
+            self.indexMinDistances = indexMaxDistancesNew
         return checkEnd
     
     def initial_step(self) -> int:
@@ -199,11 +244,19 @@ class Kmeans:
     def predict_new_point(self, newPoint: Point) -> str:
         res = str(0)
         lastCenters = self.centers
-        min = lastCenters[0].euclid_distance(newPoint)
-        for center in lastCenters:
-            d = center.euclid_distance(newPoint)
-            if min > d:
-                min = d
-                res = str(lastCenters.index(center))
+        if self.distanceType == 1: # euclid
+            min = lastCenters[0].euclid_distance(newPoint)
+            for center in lastCenters:
+                d = center.euclid_distance(newPoint)
+                if min > d:
+                    min = d
+                    res = str(lastCenters.index(center))
+        elif self.distanceType == 2: # cosine
+            max = lastCenters[0].cosine_distance(newPoint)
+            for center in lastCenters:
+                d = center.cosine_distance(newPoint)
+                if max < d:
+                    max = d
+                    res = str(lastCenters.index(center))
         return res
 
