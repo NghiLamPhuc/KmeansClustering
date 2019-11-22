@@ -57,7 +57,6 @@ def dict_to_txt(Dict: dict, folderName, name):
             row = '{0}:{1}\n'.format(key, value)
             fout.write(row)
             
-
 def list_to_txt_continuos(List: list, folderName: str, name: str, seperateType: str):
     make_folder.create_folder(folderName)
     if not List:
