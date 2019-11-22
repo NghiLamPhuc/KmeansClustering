@@ -49,11 +49,28 @@ def read_lines_to_floatlist(link, fileName, splitType) -> list:
     List = list()
     for line in f:
         if line != '\n':
-            lineToAdd = line.rstrip().split(splitType)[1:-1]
+            lineToAdd = line.rstrip().split(splitType)#[1:-1]
+            lineToAdd[0] = lineToAdd[0][1:]
+            lineToAdd[-1] = lineToAdd[-1][:-1]
             lineToFloat = [float(numStr) for numStr in lineToAdd]
             List.append(lineToFloat)
     f.close()
     return List
+
+def read_lines_to_floatlist_nonSquareBracklets(link, fileName, splitType) -> list:
+    f = open(link + '/' + fileName, 'r', encoding = 'utf-8')
+    List = list()
+    for line in f:
+        if line != '\n':
+            lineToAdd = line.rstrip().split(splitType)#[1:-1]
+            # bỏ 2 cái ngoặc vuông
+            # lineToAdd[0] = lineToAdd[0][1:]
+            # lineToAdd[-1] = lineToAdd[-1][:-1]
+            lineToFloat = [float(numStr) for numStr in lineToAdd]
+            List.append(lineToFloat)
+    f.close()
+    return List
+
 
 def read_input_file_to_int(link, fileName) -> int:
     num = 0
