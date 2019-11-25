@@ -1,0 +1,12 @@
+Loop 1
+
+Cluster 3 has 2 objects: 
+3.(10.0, 10.0)
+5.(10.0, 10.0)
+
+Loop 2
+
+Cluster 3 has 2 objects: 
+3.(10.0, 10.0)
+5.(10.0, 10.0)
+

@@ -35,6 +35,8 @@ class MyWindow(QtWidgets.QMainWindow):
         self.btnPredict.clicked.connect(self.on_Predict_clicked)
         self.btnImport.clicked.connect(self.on_Import_clicked)
         self.btnExport.clicked.connect(self.on_Export_clicked)
+        # self.btnScreenShot.clicked.connect(self.on_ScreenShot_clicked)
+
         self.spinBox.setValue(2)
         self.spinBoxVecSize.setValue(100)
         self.lineEditPredict.textChanged.connect(self.on_text_predict_changed)
@@ -57,6 +59,12 @@ class MyWindow(QtWidgets.QMainWindow):
         self.checkVectorize = 0 # 0 khi chưa vector hóa, 1 khi vector hóa rồi.
         self.checkDataType = 0 # 0 khi Dữ liệu là text, 1 khi dữ liệu là vector.
     
+    # def on_ScreenShot_clicked(self):
+    #     screen = QtWidgets.QApplication.primaryScreen()
+    #     screenshot = screen.grabWindow( QtWidgets.QWidget.winId() )
+    #     screenshot.save('shot.jpg', 'jpg')
+    #     QtWidgets.QWidget.close()
+
     def on_Vectorize_clicked(self):
         vectorSize = int(self.spinBoxVecSize.text())
         if len(self.listRawSents) == 0:

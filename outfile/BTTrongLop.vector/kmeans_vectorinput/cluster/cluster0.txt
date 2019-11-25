@@ -1,0 +1,11 @@
+Loop 1
+
+Cluster 0 has 1 objects: 
+0.(22.0, 15.0)
+
+Loop 2
+
+Cluster 0 has 2 objects: 
+0.(22.0, 15.0)
+6.(20.0, 20.0)
+

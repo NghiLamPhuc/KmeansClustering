@@ -1,0 +1,10 @@
+Loop 1
+
+Cluster 6 has 1 objects: 
+7.(32.0, 15.0)
+
+Loop 2
+
+Cluster 6 has 1 objects: 
+7.(32.0, 15.0)
+

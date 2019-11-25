@@ -122,13 +122,27 @@ class TFIDF:
     def get_listSentToVect(self):
         return 1
 
-fileName = 'corpus_giaothong_newszing.txt'
-# fileName = 'sentences.txt'
-# fileName = 'wikiexample.txt'
-listRawSentence = read_file.read_line_to_sentenceList('./datasets/', fileName, '\n')
-t = TFIDF(listRawSentence, fileName)
-# t.get_topK_TFIDF_index(1)
-t.write_outfile()
+def main():
+    # fileName = 'giao_thong.txt'
+    fileName = 'corpus_che.txt'
+    listRawSentence = read_file.read_line_to_sentenceList('./datasets/', fileName, '\n')
+    # t = TFIDF(listRawSentence, fileName)
+    # t.write_outfile()
+    
+    listSentToWord = [word_tokenize(sent, format='text') for sent in listRawSentence]
+    # listSentToWord = [word_tokenize(sent) for sent in listRawSentence]
+    from sklearn.feature_extraction.text import TfidfVectorizer
+
+    tfidf = TfidfVectorizer(lowercase=False, min_df=100)
+    tfidf_matrix = tfidf.fit_transform(listSentToWord)
+    features = tfidf.get_feature_names()
+    listStopWords = []
+    print(min(tfidf.idf_), max(tfidf.idf_), len(features))
+    for (index, feature) in enumerate(features):
+        if tfidf.idf_[index] <= (max(tfidf.idf_) - 1):
+            listStopWords.append(feature)
+    write_file.list_to_txt(listStopWords, './TFIDF/', 'stopword_withSKlearn.txt')
 
 
 
+if __name__=="__main__": main()

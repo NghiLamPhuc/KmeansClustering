@@ -1,0 +1,10 @@
+Loop 1
+
+Cluster 4 has 2 objects: 
+4.(40.0, 20.0)
+10.(30.0, 75.0)
+
+Loop 2
+
+Cluster 4 has 0 objects: 
+
